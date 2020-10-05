@@ -1,25 +1,35 @@
 import React, { useEffect, useState, } from 'react';
 import { connect, } from 'react-redux';
-import { fetchNextSetData, sortList } from './modules/action';
+import { fetchNextSetData, sortList, deleteMsg } from './modules/action';
 
 import MessageBox from './components/MessageBox';
 import Toolbar from './components/Toolbar';
 
 const ChatView = (props) => {
-    const { messages, page, limit, fetchNextSetData, sortList,  } = props;
+    const { messages, page, limit, fetchNextSetData, sortList, deleteMsg  } = props;
 
     let [sort, setSort] = useState('asc');
 
     let [isSorting, setIsSorting] = useState(false);
 
+    let [isDeleting, setIsDeleting] = useState(false);
+
+    // sort existing data
     var changeSort = function () {
         setIsSorting(true);
         setSort((sort === 'asc' ? 'desc' : 'asc'));
     }
 
+    // fetch next set of data
     var fetchMoreData = function () {
         fetchNextSetData(messages, page, limit, sort);
     }
+
+    // delete msg
+    var onDelete = function (message) {
+        deleteMsg(message, messages);
+        setIsDeleting(true);
+    };
 
     // on mount
     useEffect(() => {
@@ -37,12 +47,23 @@ const ChatView = (props) => {
         }
     }, [isSorting, messages, sort, sortList]);
 
+    useEffect(() => {
+        setIsDeleting(false);
+    }, [messages, isDeleting]);
+
     return (
         <div className="listView">
             <Toolbar onChangeSort={() => changeSort()} sort={sort} />
             {messages.map((set, idx) => {
-                return <MessageBox key={`messagechat-${idx}`} user={set.senderUuid} content={set.content} date={set.sentAt} />
-          })}
+                return <MessageBox
+                    key={`messagechat-${idx}`}
+                    deleted={(set.deleted ? true : false)}
+                    deleteMsg={() => onDelete(set)}
+                    user={set.senderUuid}
+                    content={set.content}
+                    date={set.sentAt}
+                    />
+            })}
            <div className="inifitescroll">
               <button onClick={() => fetchMoreData()}>Load More...</button>
           </div>
@@ -61,6 +82,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
     sortList: (sort, data) => dispatch(sortList(sort, data)),
     fetchNextSetData: (messages, page, limit) => dispatch(fetchNextSetData(messages, page, limit)),
+    deleteMsg: (message, messages) => dispatch(deleteMsg(message, messages)),
 });
 
 export default connect(

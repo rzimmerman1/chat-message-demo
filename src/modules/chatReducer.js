@@ -25,6 +25,11 @@ const chatReducer = (state = defaultState, action) => {
                 page: action.page,
                 limit: action.limit,
             });
+        case ActionTypes.DELETE_MSG:
+            console.log('delete', action);
+            return Object.assign({}, state, {
+                messages: action.messages,
+            });
         default:
             return state;
     }

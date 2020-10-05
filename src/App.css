@@ -10,18 +10,67 @@
 }
 
 .messageBox {
-  max-width: 500px;
+  min-width: 300px;
   width: 100%;
-  min-height: 100px;
-  max-height: 100px;
+  align-items: center;
+}
+
+.messageBox .container {
+  display: flex;
+  align-items: baseline;
+}
+
+.messageBox .icon {
+  width: 50px;
+}
+
+.messageBox .iconProfile {
+  width: 25px;
+  height: 25px;
+  border: 1px solid #888888;
+  border-radius: 50%;
+  line-height: 25px;
+  text-align: center;
+}
+
+.messageBox .chat {
+  width: calc(100% - 25px);
+  height: 20px;
   border: 1px solid #282c34;
   margin: 10px 0px;
   padding: 10px;
   border-radius: 5px;
   box-shadow: 5px 5px #888888;
+  display: flex;
 }
 
-.button {
+.messageBox .chat .delete {
+  float: right;
+  cursor: pointer;
+  width: 20px;
+}
+
+
+.messageBox .content {
+  color: #888888;
+  width: 100%;
+}
+
+.messageBox .date {
+  font-size: 11px;
+  color: #888888;
+  text-align: right;
+}
+
+.toolbar {
+  height: 40px;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  justify-content: flex-end;
+}
+
+.toolbar .button {
   background-color: transparent;
   border: 1px solid #f1f2f2;
   padding: 7px 7px;
@@ -29,21 +78,17 @@
   color: #000000;
 }
 
-.button:hover {
+.toolbar .button:hover {
   cursor: pointer;
   border-color: teal;
   color: teal; /** add company color **/ 
 }
 
-.button img.sort {
+.toolbar .button img.sort {
   height: 15px;
   width: 25px;
 }
 
-.button img.sort.asc {
-  transform: rotate(0deg);
-}
-
-.button img.sort.desc {
-  transform: rotate(180deg);
+.messageBox.hide {
+  display:none;
 }

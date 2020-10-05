@@ -18,7 +18,22 @@ function sortData(data, sort = 'asc') {
     });
 }
 
+/**
+ * 
+ * @param {*} data 
+ * @param {*} mapping 
+ * return updated set of mappings based on givin data set
+ */
+function createKeyMapping(data, mapping) {
+    data.map((message, idx) => {
+        let key = `${message.uuid}_${message.content}`;
+        mapping.add(key);
+    });
+    return mapping;
+}
+
 export {
     dateFormat,
     sortData,
+    createKeyMapping,
 }
