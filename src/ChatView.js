@@ -15,6 +15,7 @@ const ChatView = (props) => {
 
     let [isDeleting, setIsDeleting] = useState(false);
 
+
     // sort existing data
     var changeSort = function () {
         setIsSorting(true);
@@ -60,7 +61,6 @@ const ChatView = (props) => {
             </Header>
             <div className="App">
                 <div className="listView">
-                    
                     {messages.map((set, idx) => {
                         return <MessageBox
                             key={`messagechat-${idx}`}
@@ -71,7 +71,8 @@ const ChatView = (props) => {
                             date={set.sentAt}
                             />
                     })}
-                    <div className="inifitescroll">
+                    
+                   <div className="inifitescroll">
                         {hasMore && <button onClick={() => fetchMoreData()}>Load More...</button>}
                     </div>
                 </div>

@@ -12,8 +12,6 @@ const LIMIT = 5;
 
 // fetches
 const fetchNextSetData = (messages, mappings, page, limit, sortType, hasMore) => {
-    console.log('sorting data', sortType);
-    console.log('hasMore', hasMore)
     let beginIdx = (page - 1) * limit;
     let endIdx = beginIdx + limit;
     const msgs = sortData(data.messages, sortType); // get the data sorted
