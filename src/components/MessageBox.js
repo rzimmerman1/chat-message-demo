@@ -3,9 +3,16 @@ import { dateFormat, } from '../utils';
 
 const CLOSE_BTN = '../../assets/closeBtn.svg';
 
+const userColor = function(user) {
+    if (user % 2 === 0) {
+        return "userEven";
+    }
+    return "userOdd";
+}
+
 const MessageBox = ({user, content, date, deleteMsg, deleted}) => (
     <div className={`messageBox ${deleted ? 'hide': ''}`}>
-        <div className="container">
+        <div className={`container ${userColor(user)}`}>
             <div className="icon">
                 <div className="iconProfile">{user}</div>
             </div>

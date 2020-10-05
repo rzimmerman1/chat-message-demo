@@ -39,8 +39,14 @@ function createKeyMapping(data, mapping) {
     return { data, mapping };
 }
 
+// random color generator
+function randomColor() {
+    return Math.floor(Math.random()*16777215).toString(16);
+}
+
 export {
     dateFormat,
     sortData,
     createKeyMapping,
+    randomColor,
 }

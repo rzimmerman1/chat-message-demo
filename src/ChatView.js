@@ -1,10 +1,14 @@
 import React, { useEffect, useState, } from 'react';
 import { connect, } from 'react-redux';
 import { fetchNextSetData, sortList, deleteMsg } from './modules/action';
+import { randomColor, } from './utils';
 
 import Header from './components/Header';
 import MessageBox from './components/MessageBox';
 import Toolbar from './components/Toolbar';
+
+const UserColor1 = randomColor();
+const UserColor2 = randomColor();
 
 const ChatView = (props) => {
     const { messages, mappings, page, limit, fetchNextSetData, sortList, deleteMsg, hasMore  } = props;
@@ -57,6 +61,8 @@ const ChatView = (props) => {
     return (
         <React.Fragment>
             <Header>
+                <div className="space"></div>
+                <div className="headerTitle">&#8220;CHAT MESSAGES&#8221;</div>
                 <Toolbar onChangeSort={() => changeSort()} sort={sort} />
             </Header>
             <div className="App">
@@ -72,8 +78,9 @@ const ChatView = (props) => {
                             />
                     })}
                     
-                   <div className="inifitescroll">
+                   <div className="infiniteScroll">
                         {hasMore && <button onClick={() => fetchMoreData()}>Load More...</button>}
+                        {!hasMore && <div className="emptyMessages">No more messages...</div>}  
                     </div>
                 </div>
             </div>

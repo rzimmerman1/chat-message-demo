@@ -1,6 +1,8 @@
 /** variables **/
 :root {
   --blue-company: #4374ee;
+  --orange-company: #F6732C;
+  --magenta-company: #CF2C7B;
 }
 
 .App {
@@ -19,15 +21,61 @@
   width: 100%;
   top: 0;
   z-index: 10;
-  padding: 0px 10px;
+  /* padding: 0px 10px; */
   box-shadow: 0 8px 6px -6px black;
+  display: flex;                  /* establish flex container */
+  flex-direction: row;            /* default value; can be omitted */
+  flex-wrap: nowrap;              /* default value; can be omitted */
+  justify-content: space-between; /* switched from default (flex-start, see below) */
 }
+
+.header div {
+  width: 33%
+}
+
+.header .headerTitle {
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  color: #ffffff;
+  font-weight: 600;
+  font-style: italic;
+} 
 
 .header.sticky {
     position: sticky;
     top: 0;
     z-index: 10; 
 }
+
+.toolbar {
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.toolbar .button {
+  background-color: #f1f2f2;
+  border: 1px solid #f1f2f2;
+  padding: 7px 7px;
+  border-radius: 7px;
+  right: 10px;
+  color: #000000;
+  position: fixed;
+}
+
+.toolbar .button:hover {
+  cursor: pointer;
+  border-color: teal;
+  color: teal; /** add company color **/ 
+}
+
+.toolbar .button img.sort {
+  width: 20px;
+}
+
 
 .listView {
   position: relative;
@@ -58,6 +106,18 @@
   text-align: center;
 }
 
+.messageBox .userEven .iconProfile {
+  border: 1px solid var(--magenta-company);
+  background-color: var(--magenta-company);
+  color: #ffffff;
+}
+
+.messageBox .userOdd .iconProfile {
+  border: 1px solid var(--orange-company);
+  background-color: var(--orange-company);
+  color: #ffffff;
+}
+
 .messageBox .chat {
   width: calc(100% - 25px);
   height: 20px;
@@ -67,6 +127,16 @@
   border-radius: 5px;
   box-shadow: 5px 5px #888888;
   display: flex;
+}
+
+.messageBox .userEven .chat {
+  border: 1px solid  var(--magenta-company);
+  box-shadow: 5px 5px var(--magenta-company);
+}
+
+.messageBox .userOdd .chat {
+  border: 1px solid var(--orange-company);
+  box-shadow: 5px 5px var(--orange-company);
 }
 
 .messageBox .chat .delete {
@@ -87,32 +157,29 @@
   text-align: right;
 }
 
-.toolbar {
-  height: 50px;
-  display: flex;
-  align-items: center;
-  width: 95%;
-  justify-content: flex-end;
-}
-
-.toolbar .button {
-  background-color: #f1f2f2;
-  border: 1px solid #f1f2f2;
-  padding: 7px 7px;
-  border-radius: 7px;
-  color: #000000;
-}
-
-.toolbar .button:hover {
-  cursor: pointer;
-  border-color: teal;
-  color: teal; /** add company color **/ 
-}
-
-.toolbar .button img.sort {
-  width: 20px;
-}
 
 .messageBox.hide {
   display:none;
+}
+
+.emptyMessages {
+  height: 50px;
+  text-align: center;
+  font-size: 12px;
+  color: 888888;
+  font-style: italic;
+  padding: 10px;
+}
+
+.infiniteScroll {
+  padding-top: 15px;
+}
+
+.infiniteScroll button {
+  width: 100%;
+  padding: 7px;
+  border: 2px solid var(--blue-company);
+  background-color:var(--blue-company);
+  border-radius: 5px;
+  color: #ffffff;
 }
