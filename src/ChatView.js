@@ -19,6 +19,8 @@ const ChatView = (props) => {
 
     const [cleanData, setCleanData] = useState(false);
     
+    const [msgs, setMsg] = useState(messages);
+
     // sort existing data
     var changeSort = function () {
         setIsSorting(true);
@@ -36,7 +38,7 @@ const ChatView = (props) => {
         setIsDeleting(true);
     };
 
-    let loader = React.useRef(fetchMoreData);
+    const loader = React.useRef(fetchMoreData);
 
     const observer = React.useRef(
         new IntersectionObserver((entries) => {
@@ -78,8 +80,6 @@ const ChatView = (props) => {
 
      // we have to change sort
      useEffect(() => {
-        console.log('sort has changed');
-        console.log(sort);
         if (isSorting) {
             sortList(sort); // change sort
             setCleanData(true);
@@ -91,7 +91,11 @@ const ChatView = (props) => {
         setIsDeleting(false);
     }, [isDeleting]);
 
-    console.log('on messages', messages);
+    useEffect(() => {
+        console.log('we change messages')
+        setMsg(messages);
+    }, [messages]);
+
     return (
         <React.Fragment>
             <Header>
@@ -99,7 +103,7 @@ const ChatView = (props) => {
             </Header>
             <div className="App">
                 <div className="listView">
-                    {messages.map((set, idx) => {
+                    {msgs.map((set, idx) => {
                         return <MessageBox
                             key={`messagechat-${idx}`}
                             deleted={(set.deleted ? true : false)}
