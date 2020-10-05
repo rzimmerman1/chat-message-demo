@@ -25,11 +25,18 @@ function sortData(data, sort = 'asc') {
  * return updated set of mappings based on givin data set
  */
 function createKeyMapping(data, mapping) {
-    data.map((message, idx) => {
-        let key = `${message.uuid}_${message.content}`;
-        mapping.add(key);
+    data.forEach((msg) => {
+        let key =`${msg.uuid}_${msg.content}`
+        console.log('key', key);
+
+        if (mapping.has(key)) {
+            console.log('========we sound match=====', msg);
+            msg.deleted = true;
+            msg.duplicate = true;
+        } 
+            mapping.add(key);
     });
-    return mapping;
+    return { data, mapping };
 }
 
 export {

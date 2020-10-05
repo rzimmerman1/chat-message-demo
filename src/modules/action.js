@@ -17,23 +17,15 @@ const fetchNextSetData = (messages, mappings, page, limit, sortType) => {
     const msgs = sortData(data.messages, sortType); // get the data sorted
     //const newDataSet = msgs.slice(0, messages.length + limit); // full set of data plus limit
     const newDataSet = msgs.slice(beginIdx, endIdx);
-    console.log('mappings size', mappings.size);
-    if (mappings.size > 0) {
-        // remove anyting from new dataset
-        newDataSet.forEach((msg) => {
-            let key =`${msg.uuid}_${msg.content}`
-            console.log('key', key);
-
-            if (mappings.has(key)) {
-                console.log('========we sound match=====', msg);
-                msg.deleted = true;
-                msg.duplicate = true;
-            } 
-                mappings.add(key);
-        });
-    } else {
-        createKeyMapping(newDataSet, mappings);
-    }
+    
+    newDataSet.forEach((msg) => {
+        let key =`${msg.uuid}_${msg.content}`
+        if (mappings.has(key)) {
+            msg.deleted = true;
+            msg.duplicate = true;
+        } 
+            mappings.add(key);
+    });
     
     let combineData = messages.concat(newDataSet);
     console.log('mappings', mappings);
