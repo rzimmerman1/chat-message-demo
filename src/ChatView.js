@@ -18,7 +18,7 @@ const ChatView = (props) => {
     const [isDeleting, setIsDeleting] = useState(false);
 
     const [cleanData, setCleanData] = useState(false);
-
+    
     // sort existing data
     var changeSort = function () {
         setIsSorting(true);
@@ -36,7 +36,7 @@ const ChatView = (props) => {
         setIsDeleting(true);
     };
 
-    const loader = React.useRef(fetchMoreData);
+    let loader = React.useRef(fetchMoreData);
 
     const observer = React.useRef(
         new IntersectionObserver((entries) => {
@@ -76,21 +76,13 @@ const ChatView = (props) => {
         
     }, [fetchMoreData, cleanData]);
 
-    // on mount
-    useEffect(() => {
-        console.log('we mounted');
-        // fetchNextSetData(messages, mappings, page, limit, sort, hasMore);
-       
-    }, []);
-
-
      // we have to change sort
      useEffect(() => {
         console.log('sort has changed');
         console.log(sort);
         if (isSorting) {
             sortList(sort); // change sort
-            //fetchNextSetData([], new Set(), 1, limit, sort, false);
+            setCleanData(true);
             setIsSorting(false);
         }
     }, [isSorting, sort, sortList]);
