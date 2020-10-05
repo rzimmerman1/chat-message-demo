@@ -6,7 +6,7 @@ import MessageBox from './components/MessageBox';
 import Toolbar from './components/Toolbar';
 
 const ChatView = (props) => {
-    const { messages, page, limit, fetchNextSetData, sortList, deleteMsg  } = props;
+    const { messages, mappings, page, limit, fetchNextSetData, sortList, deleteMsg  } = props;
 
     let [sort, setSort] = useState('asc');
 
@@ -22,7 +22,7 @@ const ChatView = (props) => {
 
     // fetch next set of data
     var fetchMoreData = function () {
-        fetchNextSetData(messages, page, limit, sort);
+        fetchNextSetData(messages, mappings, page, limit, sort);
     }
 
     // delete msg
@@ -34,7 +34,7 @@ const ChatView = (props) => {
     // on mount
     useEffect(() => {
         console.log('we mounted');
-        fetchNextSetData(messages, page, limit, sort);
+        fetchNextSetData(messages, mappings, page, limit, sort);
     }, []);
 
      // we have to change sort
@@ -43,7 +43,7 @@ const ChatView = (props) => {
         console.log(sort);
         if (isSorting) {
             sortList(sort); // change sort
-            fetchNextSetData([], 1, limit, sort);
+            fetchNextSetData([], new Set(), 1, limit, sort);
             setIsSorting(false);
         }
     }, [isSorting, messages, sort, sortList]);
@@ -82,7 +82,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
     sortList: (sort, data) => dispatch(sortList(sort, data)),
-    fetchNextSetData: (messages, page, limit, sort) => dispatch(fetchNextSetData(messages, page, limit, sort)),
+    fetchNextSetData: (messages, mappings, page, limit, sort) => dispatch(fetchNextSetData(messages, mappings, page, limit, sort)),
     deleteMsg: (message, messages) => dispatch(deleteMsg(message, messages)),
 });
 
