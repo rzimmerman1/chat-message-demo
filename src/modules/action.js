@@ -15,12 +15,13 @@ const fetchNextSetData = (messages, page, limit, sortType) => {
     let beginIdx = (page - 1) * limit;
     let endIdx = beginIdx + limit;
     const msgs = sortData(data.messages, sortType); // get the data sorted
+    //const newDataSet = msgs.slice(0, messages.length + limit); // full set of data plus limit
     const newDataSet = msgs.slice(beginIdx, endIdx);
     let combineData = messages.concat(newDataSet);
     console.log('combine', combineData);
     return {
         type: ActionTypes.FETCH_DATA,
-        messages: sortData(combineData, sortType),
+        messages: combineData,
         page: page + 1,
         limit: limit,
     };
@@ -30,7 +31,6 @@ const fetchNextSetData = (messages, page, limit, sortType) => {
 const sortList = (sort, data) => ({
     type: ActionTypes.SORT_LIST,
     sort,
-    messages: data, // can sort it this way data
 });
 
 const deleteMsg = (message, messages) => {

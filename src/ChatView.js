@@ -42,7 +42,8 @@ const ChatView = (props) => {
         console.log('sort has changed');
         console.log(sort);
         if (isSorting) {
-            sortList(sort, messages); // change sort
+            sortList(sort); // change sort
+            fetchNextSetData([], 1, limit, sort);
             setIsSorting(false);
         }
     }, [isSorting, messages, sort, sortList]);
