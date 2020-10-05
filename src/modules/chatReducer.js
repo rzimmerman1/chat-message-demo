@@ -14,12 +14,10 @@ const defaultState = {
 const chatReducer = (state = defaultState, action) => {
     switch (action.type) {
         case ActionTypes.SORT_LIST:
-            console.log('sort', action);
             return Object.assign({}, state, {
                 sort: action.sort,
             });
         case ActionTypes.FETCH_DATA: 
-            console.log('action', action);
             return Object.assign({}, state, {
                 messages: action.messages,
                 page: action.page,
@@ -28,7 +26,6 @@ const chatReducer = (state = defaultState, action) => {
                 hasMore: action.hasMore,
             });
         case ActionTypes.DELETE_MSG:
-            console.log('delete', action);
             return Object.assign({}, state, {
                 messages: action.messages,
             });
