@@ -1,4 +1,4 @@
-import React, { useEffect, useState, } from 'react';
+import React, { useEffect, useState, useCallback, } from 'react';
 import { connect, } from 'react-redux';
 import { fetchNextSetData, sortList, deleteMsg } from './modules/action';
 
@@ -7,14 +7,17 @@ import MessageBox from './components/MessageBox';
 import Toolbar from './components/Toolbar';
 
 const ChatView = (props) => {
-    const { messages, mappings, page, limit, fetchNextSetData, sortList, deleteMsg, hasMore  } = props;
+    const { messages, mappings, page, limit, fetchNextSetData, sortList, deleteMsg, hasMore,  } = props;
 
-    let [sort, setSort] = useState('asc');
+    const [element, setElement] = useState(null);
 
-    let [isSorting, setIsSorting] = useState(false);
+    const [sort, setSort] = useState('asc');
 
-    let [isDeleting, setIsDeleting] = useState(false);
+    const [isSorting, setIsSorting] = useState(false);
 
+    const [isDeleting, setIsDeleting] = useState(false);
+
+    const [cleanData, setCleanData] = useState(false);
 
     // sort existing data
     var changeSort = function () {
@@ -23,9 +26,9 @@ const ChatView = (props) => {
     }
 
     // fetch next set of data
-    var fetchMoreData = function () {
+    var fetchMoreData = useCallback(function () {
         fetchNextSetData(messages, mappings, page, limit, sort, hasMore);
-    }
+    });
 
     // delete msg
     var onDelete = function (message) {
@@ -33,11 +36,53 @@ const ChatView = (props) => {
         setIsDeleting(true);
     };
 
+    const loader = React.useRef(fetchMoreData);
+
+    const observer = React.useRef(
+        new IntersectionObserver((entries) => {
+            // array of entries that triggered all the observations
+            const first = entries[0];
+            console.log('first', first);
+            // when isIntersecting is true then we fetch data
+            if (first.isIntersecting) {
+                // load data
+                console.log('we again here');
+                loader.current();
+            }
+        }, { threshold: 1 })
+    );
+
+    useEffect(() => {
+        const currentElement = element;
+        const currentObserver = observer.current; // ref of the current propertie
+
+        if (currentElement) {
+            currentObserver.observe(currentElement);
+        }
+        // clean up (componentDidMount)
+        return () => {
+            if (currentElement) {
+                currentObserver.unobserve(currentElement);
+            }
+        };
+    }, [element]);
+
+    useEffect(() => {
+        if (cleanData) {
+            setCleanData(false);
+        } else {
+            loader.current = fetchMoreData; 
+        }
+        
+    }, [fetchMoreData, cleanData]);
+
     // on mount
     useEffect(() => {
         console.log('we mounted');
-        fetchNextSetData(messages, mappings, page, limit, sort, hasMore);
+        // fetchNextSetData(messages, mappings, page, limit, sort, hasMore);
+       
     }, []);
+
 
      // we have to change sort
      useEffect(() => {
@@ -45,15 +90,16 @@ const ChatView = (props) => {
         console.log(sort);
         if (isSorting) {
             sortList(sort); // change sort
-            fetchNextSetData([], new Set(), 1, limit, sort, hasMore);
+            //fetchNextSetData([], new Set(), 1, limit, sort, false);
             setIsSorting(false);
         }
-    }, [isSorting, messages, sort, sortList]);
+    }, [isSorting, sort, sortList]);
 
     useEffect(() => {
         setIsDeleting(false);
-    }, [messages, isDeleting]);
+    }, [isDeleting]);
 
+    console.log('on messages', messages);
     return (
         <React.Fragment>
             <Header>
@@ -71,10 +117,9 @@ const ChatView = (props) => {
                             date={set.sentAt}
                             />
                     })}
-                    
-                   <div className="inifitescroll">
-                        {hasMore && <button onClick={() => fetchMoreData()}>Load More...</button>}
-                    </div>
+                
+                   {hasMore && <div ref={setElement} style={{ height: "100px"}} className="inifitescroll"></div>} 
+                   {!hasMore && <div className="emptyMessages">No more messages...</div>}    
                 </div>
             </div>
         </React.Fragment>

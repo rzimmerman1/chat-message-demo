@@ -116,3 +116,12 @@
 .messageBox.hide {
   display:none;
 }
+
+.emptyMessages {
+  height: 50px;
+  text-align: center;
+  font-size: 12px;
+  color: 888888;
+  font-style: italic;
+  padding: 10px;
+}

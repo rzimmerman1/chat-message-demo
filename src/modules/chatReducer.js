@@ -17,6 +17,10 @@ const chatReducer = (state = defaultState, action) => {
             console.log('sort', action);
             return Object.assign({}, state, {
                 sort: action.sort,
+                messages: [],
+                page: 1,
+                mappings: new Set(),
+                hasMore: true,
             });
         case ActionTypes.FETCH_DATA: 
             console.log('action', action);
