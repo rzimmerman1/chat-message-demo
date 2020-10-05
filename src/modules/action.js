@@ -3,6 +3,7 @@ import data from '../data.json';
 /** Action Names */
 const ActionTypes = {
     FETCH_DATA: "FETCH_DATA",
+    SORT_LIST: "SORT_LIST",
 };
 
 
@@ -19,7 +20,16 @@ const fetchNextSetData = (messages, page, limit, sortType) => {
     };
 };
 
+// actions
+const sortList = (sort, data) => ({
+    type: ActionTypes.SORT_LIST,
+    sort,
+    messages: data, // can sort it this way data
+});
+
+
 export {
     ActionTypes,
     fetchNextSetData,
+    sortList,
 }
