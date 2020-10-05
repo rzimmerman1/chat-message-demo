@@ -2,11 +2,12 @@ import React, { useEffect, useState, } from 'react';
 import { connect, } from 'react-redux';
 import { fetchNextSetData, sortList, deleteMsg } from './modules/action';
 
+import Header from './components/Header';
 import MessageBox from './components/MessageBox';
 import Toolbar from './components/Toolbar';
 
 const ChatView = (props) => {
-    const { messages, mappings, page, limit, fetchNextSetData, sortList, deleteMsg  } = props;
+    const { messages, mappings, page, limit, fetchNextSetData, sortList, deleteMsg, hasMore  } = props;
 
     let [sort, setSort] = useState('asc');
 
@@ -22,7 +23,7 @@ const ChatView = (props) => {
 
     // fetch next set of data
     var fetchMoreData = function () {
-        fetchNextSetData(messages, mappings, page, limit, sort);
+        fetchNextSetData(messages, mappings, page, limit, sort, hasMore);
     }
 
     // delete msg
@@ -34,7 +35,7 @@ const ChatView = (props) => {
     // on mount
     useEffect(() => {
         console.log('we mounted');
-        fetchNextSetData(messages, mappings, page, limit, sort);
+        fetchNextSetData(messages, mappings, page, limit, sort, hasMore);
     }, []);
 
      // we have to change sort
@@ -43,7 +44,7 @@ const ChatView = (props) => {
         console.log(sort);
         if (isSorting) {
             sortList(sort); // change sort
-            fetchNextSetData([], new Set(), 1, limit, sort);
+            fetchNextSetData([], new Set(), 1, limit, sort, hasMore);
             setIsSorting(false);
         }
     }, [isSorting, messages, sort, sortList]);
@@ -53,22 +54,29 @@ const ChatView = (props) => {
     }, [messages, isDeleting]);
 
     return (
-        <div className="listView">
-            <Toolbar onChangeSort={() => changeSort()} sort={sort} />
-            {messages.map((set, idx) => {
-                return <MessageBox
-                    key={`messagechat-${idx}`}
-                    deleted={(set.deleted ? true : false)}
-                    deleteMsg={() => onDelete(set)}
-                    user={set.senderUuid}
-                    content={set.content}
-                    date={set.sentAt}
-                    />
-            })}
-           <div className="inifitescroll">
-              <button onClick={() => fetchMoreData()}>Load More...</button>
-          </div>
-        </div>
+        <React.Fragment>
+            <Header>
+                <Toolbar onChangeSort={() => changeSort()} sort={sort} />
+            </Header>
+            <div className="App">
+                <div className="listView">
+                    
+                    {messages.map((set, idx) => {
+                        return <MessageBox
+                            key={`messagechat-${idx}`}
+                            deleted={(set.deleted ? true : false)}
+                            deleteMsg={() => onDelete(set)}
+                            user={set.senderUuid}
+                            content={set.content}
+                            date={set.sentAt}
+                            />
+                    })}
+                    <div className="inifitescroll">
+                        {hasMore && <button onClick={() => fetchMoreData()}>Load More...</button>}
+                    </div>
+                </div>
+            </div>
+        </React.Fragment>
     );
 }
 
@@ -78,11 +86,12 @@ const mapStateToProps = state => ({
     page: state.page,
     limit: state.limit,
     sort: state.sort,
+    hasMore: state.hasMore,
 });
 
 const mapDispatchToProps = dispatch => ({
     sortList: (sort, data) => dispatch(sortList(sort, data)),
-    fetchNextSetData: (messages, mappings, page, limit, sort) => dispatch(fetchNextSetData(messages, mappings, page, limit, sort)),
+    fetchNextSetData: (messages, mappings, page, limit, sort, hasMore) => dispatch(fetchNextSetData(messages, mappings, page, limit, sort, hasMore)),
     deleteMsg: (message, messages) => dispatch(deleteMsg(message, messages)),
 });
 

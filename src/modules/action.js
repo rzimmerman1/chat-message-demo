@@ -8,10 +8,12 @@ const ActionTypes = {
     DELETE_MSG: "DELETE_MSG",
 };
 
+const LIMIT = 5;
 
 // fetches
-const fetchNextSetData = (messages, mappings, page, limit, sortType) => {
+const fetchNextSetData = (messages, mappings, page, limit, sortType, hasMore) => {
     console.log('sorting data', sortType);
+    console.log('hasMore', hasMore)
     let beginIdx = (page - 1) * limit;
     let endIdx = beginIdx + limit;
     const msgs = sortData(data.messages, sortType); // get the data sorted
@@ -26,16 +28,14 @@ const fetchNextSetData = (messages, mappings, page, limit, sortType) => {
         } 
             mappings.add(key);
     });
-    
     let combineData = messages.concat(newDataSet);
-    console.log('mappings', mappings);
-    console.log('combine', combineData);
     return {
         type: ActionTypes.FETCH_DATA,
         messages: combineData,
         mappings: mappings,
         page: page + 1,
         limit: limit,
+        hasMore: (page + 1 <= (Math.ceil(data.messages.length / LIMIT))),
     };
 };
 

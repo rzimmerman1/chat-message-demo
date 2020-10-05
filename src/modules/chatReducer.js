@@ -7,6 +7,7 @@ const defaultState = {
     messages: [],
     mappings: new Set(),
     sort: 'asc',
+    hasMore: true,
 };
 
 
@@ -24,6 +25,7 @@ const chatReducer = (state = defaultState, action) => {
                 page: action.page,
                 limit: action.limit,
                 mappings: action.mappings,
+                hasMore: action.hasMore,
             });
         case ActionTypes.DELETE_MSG:
             console.log('delete', action);

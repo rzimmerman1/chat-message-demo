@@ -1,7 +1,31 @@
+/** variables **/
+:root {
+  --blue-company: #4374ee;
+}
+
 .App {
   width: 100%;
   display: flex;
   justify-content: center;
+  padding-top: 60px;
+  padding-bottom: 40px;
+}
+
+.header {
+  position: fixed;
+  background-color: var(--blue-company);
+  border-bottom: 1px solid var(--blue-company);
+  height: 50px;
+  width: 100%;
+  top: 0;
+  z-index: 10;
+  padding: 0px 10px;
+}
+
+.header.sticky {
+    position: sticky;
+    top: 0;
+    z-index: 10; 
 }
 
 .listView {
@@ -63,15 +87,15 @@
 }
 
 .toolbar {
-  height: 40px;
+  height: 50px;
   display: flex;
   align-items: center;
-  width: 100%;
+  width: 95%;
   justify-content: flex-end;
 }
 
 .toolbar .button {
-  background-color: transparent;
+  background-color: #f1f2f2;
   border: 1px solid #f1f2f2;
   padding: 7px 7px;
   border-radius: 7px;
@@ -85,8 +109,7 @@
 }
 
 .toolbar .button img.sort {
-  height: 15px;
-  width: 25px;
+  width: 20px;
 }
 
 .messageBox.hide {
