@@ -11,13 +11,16 @@ const ActionTypes = {
 
 // fetches
 const fetchNextSetData = (messages, page, limit, sortType) => {
+    console.log('sorting data', sortType);
     let beginIdx = (page - 1) * limit;
     let endIdx = beginIdx + limit;
-    const msgs = sortData(data.messages, sortType);
-    const arr = msgs.slice(beginIdx, endIdx);
+    const msgs = sortData(data.messages, sortType); // get the data sorted
+    const newDataSet = msgs.slice(beginIdx, endIdx);
+    let combineData = messages.concat(newDataSet);
+    console.log('combine', combineData);
     return {
         type: ActionTypes.FETCH_DATA,
-        messages: messages.concat(arr),
+        messages: sortData(combineData, sortType),
         page: page + 1,
         limit: limit,
     };

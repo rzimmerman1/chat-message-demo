@@ -34,7 +34,7 @@ const ChatView = (props) => {
     // on mount
     useEffect(() => {
         console.log('we mounted');
-        fetchNextSetData(messages, page, limit);
+        fetchNextSetData(messages, page, limit, sort);
     }, []);
 
      // we have to change sort
@@ -81,7 +81,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
     sortList: (sort, data) => dispatch(sortList(sort, data)),
-    fetchNextSetData: (messages, page, limit) => dispatch(fetchNextSetData(messages, page, limit)),
+    fetchNextSetData: (messages, page, limit, sort) => dispatch(fetchNextSetData(messages, page, limit, sort)),
     deleteMsg: (message, messages) => dispatch(deleteMsg(message, messages)),
 });
 
