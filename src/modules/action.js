@@ -1,5 +1,5 @@
 import data from '../data.json';
-import { sortData, createKeyMapping, } from '../utils/index';
+import { sortData, } from '../utils/index';
 
 /** Action Names */
 const ActionTypes = {
@@ -14,8 +14,7 @@ const LIMIT = 5;
 const fetchNextSetData = (messages, mappings, page, limit, sortType, hasMore) => {
     let beginIdx = (page - 1) * limit;
     let endIdx = beginIdx + limit;
-    const msgs = sortData(data.messages, sortType); // get the data sorted
-    //const newDataSet = msgs.slice(0, messages.length + limit); // full set of data plus limit
+    const msgs = sortData(data.messages, sortType); 
     const newDataSet = msgs.slice(beginIdx, endIdx);
     
     newDataSet.forEach((msg) => {
@@ -47,7 +46,6 @@ const deleteMsg = (message, messages) => {
     messages.forEach((msg) => {
         // same object lets delete it
         if (msg === message) {
-            console.log(msg);
             msg.deleted = true;
         }
     });

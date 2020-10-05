@@ -1,14 +1,10 @@
 import React, { useEffect, useState, } from 'react';
 import { connect, } from 'react-redux';
 import { fetchNextSetData, sortList, deleteMsg } from './modules/action';
-import { randomColor, } from './utils';
 
 import Header from './components/Header';
 import MessageBox from './components/MessageBox';
 import Toolbar from './components/Toolbar';
-
-const UserColor1 = randomColor();
-const UserColor2 = randomColor();
 
 const ChatView = (props) => {
     const { messages, mappings, page, limit, fetchNextSetData, sortList, deleteMsg, hasMore  } = props;
@@ -39,20 +35,17 @@ const ChatView = (props) => {
 
     // on mount
     useEffect(() => {
-        console.log('we mounted');
         fetchNextSetData(messages, mappings, page, limit, sort, hasMore);
     }, []);
 
      // we have to change sort
      useEffect(() => {
-        console.log('sort has changed');
-        console.log(sort);
         if (isSorting) {
             sortList(sort); // change sort
             fetchNextSetData([], new Set(), 1, limit, sort, hasMore);
             setIsSorting(false);
         }
-    }, [isSorting, messages, sort, sortList]);
+    }, [isSorting]);
 
     useEffect(() => {
         setIsDeleting(false);
